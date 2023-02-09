@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form method="post" action="/input" enctype="multipart/form-data">
+    <input type="file" name="csv">
+    <input type="number" name="max_pass">
+    <button type="submit">Go!</button>
+</form>
+{% endblock %}

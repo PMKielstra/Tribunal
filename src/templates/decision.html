@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form style="display:none" id="hidden-form" method="post" action="/update">
+    <input type="text" name="path" value="{{path}}">
+    <input type="text" name="left" value="{{left[0]}}">
+    <input type="text" name="right" value="{{right[0]}}">
+    <input type="text" name="command" id="command">
+    <input type="text" name="direction" id="direction">
+</form>
+
+LEFT:
+
+{{left[1]}}
+
+RIGHT:
+
+{{right[1]}}
+
+<script>
+    const command = document.getElementById("command");
+    const direction = document.getElementById("direction");
+    const form = document.getElementById("hidden-form");
+    command_keys = {
+        "q": "PASS",
+        "e": "PASS",
+        "a": "SORT",
+        "d": "SORT",
+        "z": "STRIKE",
+        "c": "STRIKE"
+    };
+    direction_keys = {
+        "q": "l",
+        "a": "l",
+        "z": "l",
+        "e": "r",
+        "d": "r",
+        "c": "r"
+    };
+    window.onkeydown = function (event) {
+        if (event.key in command_keys) {
+            command.value = command_keys[event.key];
+            direction.value = direction_keys[event.key];
+            form.submit();
+        }
+    }
+</script>
+
+{% endblock %}
