@@ -45,14 +45,19 @@ def upload_data():
 
     if tree != None:
         return redirect("/")
-    print(request.files)
-    max_pass = int(request.form["max_pass"])
+
     csvstream = StringIO(request.files["csv"].stream.read().decode("UTF8"), newline=None)
     csvlist = list(csv.reader(csvstream))
     headers = csvlist[0]
     tree, tree_paths = prepare(csvlist[1:])
     for path in tree_paths:
         paths.put(path)
+    
+    if "max_pass" not in request.form or request.form["max_pass"] == "":
+        max_pass == len(csvlist)
+    else:
+        max_pass = int(request.form["max_pass"])
+
     return redirect("/")
 
 @app.route("/update", methods=["POST"])
