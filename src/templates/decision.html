@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% import "elt_display.html" as elt %}
 
 {% block content %}
 <form style="display:none" id="hidden-form" method="post" action="/update">
@@ -9,13 +10,25 @@
     <input type="text" name="direction" id="direction">
 </form>
 
-LEFT:
-
-{{left[1]}}
-
-RIGHT:
-
-{{right[1]}}
+<div class="decision-container">
+    <div class="decision left"></div>
+        {% elt.display(headers, left[1]) %}
+    <div class="decision right">
+        {% elt.display(headers, right[1]) %}
+    </div>
+</div>
+<div class="footer">
+    <div class="footer-buttons">
+        <button onclick="execute('SORT', 'l')">Choose (a)</button>
+        <button onclick="execute('PASS', 'l')">Pass (q)</button>
+        <button onclick="execute('STRIKE', 'l')">Strike (z)</button>
+    </div>
+    <div class="footer-buttons">
+        <button onclick="execute('STRIKE', 'r')">Strike (c)</button>
+        <button onclick="execute('PASS', 'r')">Pass (e)</button>
+        <button onclick="execute('SORT', 'r')">Choose (d)</button>
+    </div>
+</div>
 
 <script>
     const command = document.getElementById("command");
@@ -37,11 +50,14 @@ RIGHT:
         "d": "r",
         "c": "r"
     };
+    function execute(comm, dir) {
+        command.value = comm;
+        direction.value = dir;
+        form.submit();
+    }
     window.onkeydown = function (event) {
         if (event.key in command_keys) {
-            command.value = command_keys[event.key];
-            direction.value = direction_keys[event.key];
-            form.submit();
+            execute(command_keys[event.key], direction_keys[event.key]);
         }
     }
 </script>
