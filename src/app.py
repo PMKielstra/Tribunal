@@ -54,7 +54,7 @@ def upload_data():
         paths.put(path)
     
     if "max_pass" not in request.form or request.form["max_pass"] == "":
-        max_pass == len(csvlist)
+        max_pass = len(csvlist)
     else:
         max_pass = int(request.form["max_pass"])
 
