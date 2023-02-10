@@ -67,7 +67,7 @@ def tree_post():
     global max_pass
     path = request.form["path"]
     if path not in paths_in_use:
-        return redirect('')
+        return redirect("/")
     paths_in_use.remove(path)
     left_id = request.form["left"]
     right_id = request.form["right"]
