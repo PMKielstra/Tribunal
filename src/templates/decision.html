@@ -32,6 +32,10 @@
 </div>
 
 <script>
+    if (history.scrollRestoration) {
+        history.scrollRestoration = 'manual';
+    }
+
     const command = document.getElementById("command");
     const direction = document.getElementById("direction");
     const form = document.getElementById("hidden-form");
