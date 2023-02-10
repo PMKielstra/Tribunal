@@ -1,5 +1,12 @@
 {% extends "base.html" %}
+{% import "elt_display.html" as elt %}
 
 {% block content %}
-{{ list }}
+    <div class="results">
+        {% for item in list %}
+            <div class="result-elt">
+                {{ elt.display(headers, item[1]) }}
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}

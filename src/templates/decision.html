@@ -11,22 +11,23 @@
 </form>
 
 <div class="decision-container">
-    <div class="decision left"></div>
-        {% elt.display(headers, left[1]) %}
+    <div class="decision left">  
+        {{ elt.display(headers, left[1]) }}
+    </div>
     <div class="decision right">
-        {% elt.display(headers, right[1]) %}
+        {{ elt.display(headers, right[1]) }}
     </div>
 </div>
-<div class="footer">
-    <div class="footer-buttons">
-        <button onclick="execute('SORT', 'l')">Choose (a)</button>
-        <button onclick="execute('PASS', 'l')">Pass (q)</button>
-        <button onclick="execute('STRIKE', 'l')">Strike (z)</button>
+<div class="choice-bar">
+    <div class="choice-buttons" style="float: left">
+        <button class="colored" onclick="execute('SORT', 'l')"><span class="material-symbols-outlined left">check</span><span>Choose (a)</span></button>
+        <button onclick="execute('PASS', 'l')"><span class="material-symbols-outlined left">done_all</span><span>Full accept (q)</span></button>
+        <button onclick="execute('STRIKE', 'l')"><span class="material-symbols-outlined left">delete</span><span>Full reject (z)</span></button>
     </div>
-    <div class="footer-buttons">
-        <button onclick="execute('STRIKE', 'r')">Strike (c)</button>
-        <button onclick="execute('PASS', 'r')">Pass (e)</button>
-        <button onclick="execute('SORT', 'r')">Choose (d)</button>
+    <div class="choice-buttons" style="float: right">
+        <button onclick="execute('STRIKE', 'r')"><span>Full reject (c)</span><span class="material-symbols-outlined right">delete</span></button>
+        <button onclick="execute('PASS', 'r')"><span>Full accept (e)</span><span class="material-symbols-outlined right">done_all</span></button>
+        <button class="colored" onclick="execute('SORT', 'r')"><span>Choose (d)</span><span class="material-symbols-outlined right">check</span></button>
     </div>
 </div>
 

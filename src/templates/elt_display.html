@@ -1,7 +1,7 @@
 {% macro display(headers, data) %}
     {% for item in data %}
         {% if item != "" %}
-        <p><span class="elt-heading">{{headers[loop.counter]}}:</span> {{item}}</p>
+        <p><span class="elt-heading">{{headers[loop.index - 1]}}</span> {{item}}</p>
         {% endif %}
     {% endfor %}
 {% endmacro %}

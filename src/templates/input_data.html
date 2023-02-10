@@ -2,8 +2,16 @@
 
 {% block content %}
 <form method="post" action="/input" enctype="multipart/form-data">
-    <input type="file" name="csv" accept=".csv">
-    <input type="number" name="max_pass">
-    <button type="submit">Go!</button>
+    <div>
+    <label for="csv">CSV with header row: </label>
+    <input type="file" name="csv" id="csv" accept=".csv">
+    </div>
+    <div>
+    <label for="max_pass">Maximum number of results to accept (or leave blank):</label>
+    <input type="number" id"max_pass" name="max_pass">
+    </div>
+    <div>
+    <button type="submit" class="colored"><span>Sort</span><span class="material-symbols-outlined right">arrow_forward</span></button>
+    </div>
 </form>
 {% endblock %}

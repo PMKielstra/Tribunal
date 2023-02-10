@@ -1,4 +1,5 @@
 from flask import Flask, render_template, redirect, request
+from flask_fontawesome import FontAwesome
 from queue import Queue, Empty
 from io import StringIO
 import csv
@@ -6,6 +7,7 @@ import csv
 from tree_mergesort import decision_ui, prepare, update_tree, BadPath
 
 app = Flask(__name__)
+FontAwesome(app)
 
 tree = None
 paths = Queue()
