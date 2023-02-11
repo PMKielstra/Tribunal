@@ -3,7 +3,7 @@
 
 {% block content %}
     <div class="results">
-        {% for item in list %}
+        {%- for item in list -%}
             <div class="result-elt">
                 <div class="summary">
                     <span role="button" aria-pressed="false" class="material-symbols-outlined summary-expand" id="summary-expand-{{loop.index}}" onclick="expand_contract('{{loop.index}}')">expand_more</span><span class="summary-title">{{item[0]}} - {{item[1][0]}}</span>
@@ -12,7 +12,7 @@
                     {{ elt.display(headers, item[1]) }}
                 </div>
             </div>
-        {% endfor %}
+        {%- endfor -%}
     </div>
     <div class="bottom-right-buttons buffer">
         <button class="colored"><span>Export</span><span class="material-symbols-outlined right">arrow_forward</span></button>

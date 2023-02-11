@@ -1,7 +1,7 @@
-{% macro display(headers, data) %}
-    {% for item in data %}
-        {% if item != "" %}
-        <p><span class="elt-heading">{{headers[loop.index - 1]}}</span> {{replace_newlines(item) | safe}}</p>
-        {% endif %}
-    {% endfor %}
-{% endmacro %}
+{%- macro display(headers, data) -%}
+    {%- for item in data -%}
+        {%- if item != "" -%}
+        <p><span class="elt-heading">{{headers[loop.index - 1]}}</span> {{replace_newlines(item) | safe}}{# replace_newlines does our escaping for us -- these are not necessarily safe data! #}</p>
+        {%- endif -%}
+    {%- endfor -%}
+{%- endmacro -%}

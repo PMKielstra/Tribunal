@@ -1,5 +1,4 @@
 from math import floor
-from flask import render_template
 
 class Tree:
     """A tree for implementing mergeSort.  Every node contains a list and a flag to indicate if no more sorting is required."""
