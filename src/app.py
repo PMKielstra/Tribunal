@@ -123,7 +123,7 @@ def export():
     return send_file(BytesIO(bytes(si.getvalue(), "UTF8")), download_name="Ranking.csv", mimetype="text/csv")
 
 @app.route("/update", methods=["POST"])
-def update_tree():
+def sort_update():
     global max_pass
 
     path = request.form["path"]
