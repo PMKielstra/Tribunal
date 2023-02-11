@@ -4,13 +4,17 @@ from queue import Queue, Empty
 from io import StringIO, BytesIO
 import csv
 import pickle
+from html import escape
 
 from tree_mergesort import decision_ui, prepare, update_tree, BadPath
-from replace_newlines import replaceNewlines
 
 app = Flask(__name__)
 FontAwesome(app)
-replaceNewlines(app)
+
+def replace_newlines(str):
+    return "<br>".join(escape(str).split("\n"))
+
+app.jinja_env.globals.update(replace_newlines=replace_newlines)
 
 tree = None
 paths = Queue()
