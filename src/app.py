@@ -1,5 +1,4 @@
 from flask import Flask, render_template, redirect, request, send_file
-from flask_fontawesome import FontAwesome
 from queue import Queue, Empty
 from io import StringIO, BytesIO
 import csv
@@ -9,7 +8,6 @@ from html import escape
 from tree_mergesort import decision, prepare, update_tree, BadPath
 
 app = Flask(__name__)
-FontAwesome(app)
 
 def replace_newlines(str):
     return "<br>".join(escape(str).split("\n"))
