@@ -24,7 +24,7 @@ Tribunal instances go through three phases:
 
 3. Output.  When the final comparison is completed, all users are shown a page listing all accepted entries.  The explicitly accepted ones come first, followed by those from the top of the list in sorted order.  Users may also download the ranked results as a CSV, which will include a new column giving the position of each line in the original CSV.  (This is 1-indexed.)
 
-During the sorting phase, users may also download a pickle ("Tribunal file") of the instance's internal state.  If they are forced to shut down their current instance, they may upload this to a new one and pick up where they left off.
+During the sorting phase, users may also download a pickle ("Tribunal save file") of the instance's internal state.  If they are forced to shut down their current instance, they may upload this to a new one and pick up where they left off.
 
 In the output phase, entries are identified to users by their first-column entries.  For maximum readability, make sure that this is human-readable and not a timestamp or a unique ID.
 
