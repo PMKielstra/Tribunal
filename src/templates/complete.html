@@ -5,8 +5,34 @@
     <div class="results">
         {% for item in list %}
             <div class="result-elt">
-                {{ elt.display(headers, item[1]) }}
+                <div class="summary">
+                    <span role="button" aria-pressed="false" class="material-symbols-outlined summary-expand" id="summary-expand-{{loop.index}}" onclick="expand_contract('{{loop.index}}')">expand_more</span><span class="summary-title">{{item[0]}} - {{item[1][0]}}</span>
+                </div>
+                <div class="result-details" style="display: none" id="details-{{loop.index}}">
+                    {{ elt.display(headers, item[1]) }}
+                </div>
             </div>
         {% endfor %}
     </div>
+    <div class="bottom-right-buttons buffer">
+        <button class="colored"><span>Export</span><span class="material-symbols-outlined right">arrow_forward</span></button>
+    </div>
+    <div class="bottom-right-buttons">
+        <button class="colored" onclick="window.open('/export')"><span>Export</span><span class="material-symbols-outlined right">arrow_forward</span></button>
+    </div>
+    <script>
+        function expand_contract(index) {
+            const expand_contract_button = document.getElementById("summary-expand-" + index);
+            const details_container = document.getElementById("details-" + index);
+            if (expand_contract_button.innerHTML == "expand_more") {
+                details_container.style.display = "";
+                expand_contract_button.innerHTML = "expand_less";
+                expand_contract_button.ariaPressed = "true";
+            } else {
+                details_container.style.display = "none";
+                expand_contract_button.innerHTML = "expand_more";
+                expand_contract_button.ariaPressed = "false";
+            }
+        }
+    </script>
 {% endblock %}

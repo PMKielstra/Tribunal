@@ -19,12 +19,15 @@
     </div>
 </div>
 <div class="choice-bar">
-    <div class="choice-buttons" style="float: left">
+    <div class="choice-buttons">
         <button class="colored" onclick="execute('SORT', 'l')"><span class="material-symbols-outlined left">check</span><span>Choose (a)</span></button>
         <button onclick="execute('PASS', 'l')"><span class="material-symbols-outlined left">done_all</span><span>Full accept (q)</span></button>
         <button onclick="execute('STRIKE', 'l')"><span class="material-symbols-outlined left">delete</span><span>Full reject (z)</span></button>
     </div>
-    <div class="choice-buttons" style="float: right">
+    <div class="choice-buttons">
+        <button onclick="window.open('/save')"><span>Save</span><span class="material-symbols-outlined right">save</span></button>
+    </div>
+    <div class="choice-buttons">
         <button onclick="execute('STRIKE', 'r')"><span>Full reject (c)</span><span class="material-symbols-outlined right">delete</span></button>
         <button onclick="execute('PASS', 'r')"><span>Full accept (e)</span><span class="material-symbols-outlined right">done_all</span></button>
         <button class="colored" onclick="execute('SORT', 'r')"><span>Choose (d)</span><span class="material-symbols-outlined right">check</span></button>
@@ -33,7 +36,7 @@
 
 <script>
     if (history.scrollRestoration) {
-        history.scrollRestoration = 'manual';
+        history.scrollRestoration = "manual";
     }
 
     const command = document.getElementById("command");

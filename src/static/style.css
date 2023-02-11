@@ -48,6 +48,12 @@ body {
     flex-grow: 0;
     padding: 16px;
     padding-top: 8px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.choice-buttons {
+    flex-grow: 0;
 }
 
 .decision p, .result-elt {
@@ -128,4 +134,28 @@ div.result-elt p:first-of-type {
 
 div.result-elt p:last-of-type {
     margin-bottom: 0;
+}
+
+span.summary-expand {
+    user-select: none;
+    cursor: pointer;
+    vertical-align: middle;
+    margin-right: 8px;
+}
+
+div.result-details {
+    margin-top: 16px;
+}
+
+div.bottom-right-buttons {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    padding: 16px;
+    background-color: #ccc;
+}
+
+div.buffer {
+    position: unset;
+    visibility: hidden;
 }
