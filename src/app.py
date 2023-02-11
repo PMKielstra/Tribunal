@@ -24,6 +24,7 @@ headers = []
 max_pass = 0
 
 def get_next_path():
+    """Get a path from the queue, or steal a path currently in use by someone else if the queue has no paths left."""
     try:
         return paths.get(False)
     except Empty:
@@ -34,17 +35,22 @@ def get_next_path():
 
 @app.route("/")
 def main_page():
+    # There are four options for the main page.
+    # 1: "Upload data for sorting"
     if tree == None:
         return render_template('input_data.html')
+    # 2: "Sorting complete; view sorted data"
     elif tree.complete:
         return render_template('complete.html', list = passed + tree.elts, headers = headers)
     elif len(passed) >= max_pass:
         return render_template('complete.html', list = passed, headers = headers)
+    # 3: "Sort these two pieces of data"
     else:
         try:
             path = get_next_path()
             paths_in_use.append(path)
             return decision_ui(path, tree, headers)
+    # 4: "No data to sort at this time"
         except Empty:
             return render_template('no_work.html')
 
@@ -52,10 +58,12 @@ def main_page():
 def upload_data():
     global max_pass, headers, tree, paths
 
+    # Don't let anyone upload new data if there's already any there.
+    # Also serves as a safeguard against people finding long-running instances and uploading malicious pickles.
     if tree != None:
         return redirect("/")
 
-    uploaded_file = request.files["csv"]
+    uploaded_file = request.files["csv"] # "csv" is the name of the upload control in the HTML form.  It doesn't have to be an actual CSV.  If it's a save pickle, it won't be.
 
     if uploaded_file.mimetype not in ["text/csv", "text/plain"]:
         load(pickle.loads(uploaded_file.stream.read()))
@@ -80,7 +88,7 @@ def save():
     global tree, paths, paths_in_use, passed, headers, max_pass
     data = {
         "tree": tree,
-        "paths": list(paths.queue),
+        "paths": list(paths.queue), # Queues have various threading abilities that don't pickle, so we reduce ours to its core list.
         "paths_in_use": paths_in_use,
         "passed": passed,
         "headers": headers,
@@ -88,6 +96,7 @@ def save():
     }
     return send_file(BytesIO(pickle.dumps(data)), download_name="Ranking.trib", mimetype="application/octet-stream")
 
+# No @app.route -- this is called by upload_data
 def load(data):
     global tree, paths, paths_in_use, passed, headers, max_pass
     tree = data["tree"]
@@ -95,10 +104,10 @@ def load(data):
     passed = data["passed"]
     headers = data["headers"]
     max_pass = data["max_pass"]
-    for p in data["paths"]:
+    for p in data["paths"]: # This queue was stored as a list, so we have to push each item individually.  Changing the order doesn't matter.
         paths.put(p)
 
-@app.route("/export")
+@app.route("/export") # Only linked to from the final screen
 def export():
     global tree, max_pass, headers
 
@@ -114,23 +123,31 @@ def export():
     return send_file(BytesIO(bytes(si.getvalue(), "UTF8")), download_name="Ranking.csv", mimetype="text/csv")
 
 @app.route("/update", methods=["POST"])
-def tree_post():
+def update_tree():
     global max_pass
+
     path = request.form["path"]
+
     if path not in paths_in_use:
         return redirect("/")
+    
     paths_in_use.remove(path)
+
     left_id = request.form["left"]
     right_id = request.form["right"]
     command = request.form["command"]
     direction = request.form["direction"]
-    if command in ["PASS", "STRIKE", "SORT"] and direction in ["l", "r"]:
-        try:
-            new_path = update_tree(tree, passed, path, left_id, right_id, command, direction, max_pass)
-            if new_path != None:
-                paths.put(new_path)
-        except BadPath:
-            pass
+
+    if command not in ["PASS", "STRIKE", "SORT"] or direction not in ["l", "r"]:
+        return redirect("/")
+    
+    try:
+        new_path = update_tree(tree, passed, path, left_id, right_id, command, direction, max_pass)
+        if new_path != None:
+            paths.put(new_path)
+    except BadPath: # Exception indicates the user has tried to sort two elements which no longer need sorting.  This usually happens if someone else has stolen that work.  We just fail silently and continue.
+        pass
+
     return redirect("/")
 
 if __name__ == "__main__":
