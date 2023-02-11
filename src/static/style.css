@@ -43,6 +43,11 @@ body {
     margin-bottom: 0;
 }
 
+.stolen-bar p {
+    text-align: center;
+    margin: 0;
+}
+
 .choice-bar {
     width: 100%;
     flex-grow: 0;

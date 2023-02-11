@@ -18,6 +18,11 @@
         {{ elt.display(headers, right[1]) }}
     </div>
 </div>
+{%- if stolen -%}
+<div class="stolen-bar">
+    <p>You and someone else are both comparing these two entries.  That usually means that there are too many people trying to sort entries at once.</p>
+</div>
+{%- endif -%}
 <div class="choice-bar">
     <div class="choice-buttons">
         <button class="colored" onclick="execute('SORT', 'l')"><span class="material-symbols-outlined left">check</span><span>Choose (a)</span></button>

@@ -22,18 +22,20 @@ headers = []
 max_pass = 0
 
 def get_next_path():
-    """Get a path from the queue, or steal a path currently in use by someone else if the queue has no paths left."""
+    """Get a path from the queue, or steal a path currently in use by someone else if the queue has no paths left.  Return the path plus a flag indicating if it was stolen."""
     try:
-        return paths.get(False)
+        return paths.get(False), False
     except Empty:
         if len(paths_in_use) > 0:
-            return paths_in_use.pop(0)
+            oldest = paths_in_use.pop(0)
+            paths_in_use.append(oldest)
+            return(oldest, True)
         else:
             raise Empty
 
 @app.route("/")
 def main_page():
-    # There are four options for the main page.
+    # There are three options for the main page.
     # 1: "Upload data for sorting"
     if tree == None:
         return render_template('input_data.html')
@@ -44,15 +46,10 @@ def main_page():
         return render_template('complete.html', list = passed, headers = headers)
     # 3: "Sort these two pieces of data"
     else:
-        try:
-            path = get_next_path()
-            paths_in_use.append(path)
-            left, right = decision(path, tree)
-            return render_template("decision.html", path=path, left=left, right=right, headers=headers)
-
-    # 4: "No data to sort at this time"
-        except Empty:
-            return render_template('no_work.html')
+        path, stolen = get_next_path()
+        paths_in_use.append(path)
+        left, right = decision(path, tree)
+        return render_template("decision.html", path=path, left=left, right=right, headers=headers, stolen=stolen)
 
 @app.route("/input", methods=["POST"])
 def upload_data():
