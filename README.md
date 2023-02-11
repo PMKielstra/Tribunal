@@ -26,6 +26,6 @@ Tribunal instances go through three phases:
 
 During the sorting phase, users may also download a pickle ("Tribunal file") of the instance's internal state.  If they are forced to shut down their current instance, they may upload this to a new one and pick up where they left off.
 
-In phase 3, entries are identified to users by their first-column entries.  For maximum readability, make sure that this is human-readable and not a timestamp or a unique ID.
+In the output phase, entries are identified to users by their first-column entries.  For maximum readability, make sure that this is human-readable and not a timestamp or a unique ID.
 
-There is no way to leave phase 3.  To sort a new dataset, start a new instance.
+There is no way to leave the output phase.  To sort a new dataset, start a new instance.
