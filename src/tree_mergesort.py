@@ -16,7 +16,7 @@ class BadPath(Exception):
     pass
 
 def string_of_tree (tree):
-    """A debug function.  Shouldn't be used in production."""
+    """Renders trees as strings for readability.  A debug function.  Shouldn't be used in production."""
     if tree == None: return "||"
     return f"({string_of_tree(tree.left)} < {tree.elts} > {string_of_tree(tree.right)})"
 
