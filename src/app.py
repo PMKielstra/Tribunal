@@ -6,7 +6,7 @@ import csv
 import pickle
 from html import escape
 
-from tree_mergesort import decision_ui, prepare, update_tree, BadPath
+from tree_mergesort import decision, prepare, update_tree, BadPath
 
 app = Flask(__name__)
 FontAwesome(app)
@@ -49,7 +49,9 @@ def main_page():
         try:
             path = get_next_path()
             paths_in_use.append(path)
-            return decision_ui(path, tree, headers)
+            left, right = decision(path, tree)
+            return render_template("decision.html", path=path, left=left, right=right, headers=headers)
+
     # 4: "No data to sort at this time"
         except Empty:
             return render_template('no_work.html')

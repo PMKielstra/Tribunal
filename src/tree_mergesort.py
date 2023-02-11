@@ -2,7 +2,9 @@ from math import floor
 from flask import render_template
 
 class Tree:
+    """A tree for implementing mergeSort.  Every node contains a list and a flag to indicate if no more sorting is required."""
     def __init__(self, elts, left, right):
+        """Requires that elts is either a singleton, in which case this is a leaf, or empty"""
         assert (len(elts) == 1 and left == None and right == None) or (len(elts) == 0)
         self.elts = elts
         self.right = right
@@ -10,11 +12,18 @@ class Tree:
         self.complete = (len(elts) == 1)
 
 class BadPath(Exception):
+    """Path not found in tree."""
     pass
 
 def string_of_tree (tree):
+    """A debug function.  Shouldn't be used in production."""
     if tree == None: return "||"
     return f"({string_of_tree(tree.left)} < {tree.elts} > {string_of_tree(tree.right)})"
+
+def prepare(elts):
+    """Transform an unsorted list into a tree.  Return a list of all paths through the tree to nodes which require sorting.  Paths are strings because they have to be passed through HTTP.  They only use "r" and "l"."""
+    tree, paths, _last = prepare_recursive(list(enumerate(elts, 1)), "")
+    return tree, paths
 
 def prepare_recursive(elts, path):
     if len(elts) <= 1:
@@ -29,26 +38,25 @@ def prepare_recursive(elts, path):
 
     return Tree([], left, right), final_paths, False
 
-def prepare(elts):
-    tree, paths, _last = prepare_recursive(list(enumerate(elts, 1)), "")
-    return tree, paths
-
-def check_path(path, tree):
-    if tree.complete:
-        return False
-    return check_path(path)
-
-def decision_ui_recursive(path, fullpath, tree, headers):
+def decision(path, tree):
+    """Recurse down the tree, following a path, and return the two unsorted elements at the end of it.  We validate the path as we go, as a bonus."""
     if path == "":
-        return render_template("decision.html", path=fullpath, left=tree.left.elts[0], right=tree.right.elts[0], headers=headers)
+        return tree.left.elts[0], tree.right.elts[0]
     else:
         assert path[0] in ["l", "r"]
-        return decision_ui_recursive(path[1:], fullpath, tree.left if path[0] == "l" else tree.right, headers)
-
-def decision_ui(path, tree, headers):
-    return decision_ui_recursive(path, path, tree, headers)
+        return decision(path[1:], tree.left if path[0] == "l" else tree.right)
 
 def update_tree(tree, passed, path, left_id, right_id, command, command_direction, max_pass):
+    """
+    Turn a user decision into a mergeSort step.
+    
+    The following commands are possible:
+    * SORT (l|r): the chosen element is to be sorted higher than the other one.
+    * STRIKE (l|r): the chosen element is to be deleted.
+    * PASS (l|r): the chosen element has been unconditionally accepted and is to be promoted to the auto-pass list.
+
+    After altering the tree, there will be a new comparison that has to be made.  Return a path to this comparison.
+    """
 
     # Step 1: recurse down tree
     if len(path) > 0:
