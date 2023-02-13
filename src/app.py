@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, request, send_file
-from queue import Queue, Empty
+from queue import LifoQueue, Empty
 from io import StringIO, BytesIO
 import csv
 import pickle
@@ -15,7 +15,7 @@ def replace_newlines(str):
 app.jinja_env.globals.update(replace_newlines=replace_newlines)
 
 tree = None
-paths = Queue()
+paths = LifoQueue()
 paths_in_use = []
 passed = []
 headers = []
